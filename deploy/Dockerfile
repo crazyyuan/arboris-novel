@@ -65,9 +65,10 @@ COPY --from=frontend-builder /frontend/dist /usr/share/nginx/html
 COPY deploy/nginx.conf /etc/nginx/sites-available/default
 COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY deploy/docker-entrypoint.sh /app/docker-entrypoint.sh
+COPY deploy/healthcheck.sh /app/healthcheck.sh
 
-# 允许入口脚本在启动时修正宿主机挂载目录权限
-RUN chmod +x /app/docker-entrypoint.sh
+# 允许脚本执行
+RUN chmod +x /app/docker-entrypoint.sh /app/healthcheck.sh
 
 # 创建非 root 用户（供 supervisor 使用）
 RUN useradd -m -u 1000 appuser && \

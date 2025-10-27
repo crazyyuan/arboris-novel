@@ -100,6 +100,17 @@ DB_PROVIDER=mysql docker compose --profile mysql up -d
 DB_PROVIDER=mysql docker compose up -d
 ```
 
+### 方式四：部署到 Coolify 等平台
+
+如果你使用 Coolify、Railway、Render 等平台部署：
+
+1. **使用 Docker Image**：`tiechui251/arboris-app:latest`
+2. **暴露端口**：`80`（应用自带 Nginx）
+3. **必需环境变量**：`SECRET_KEY` 和 `OPENAI_API_KEY`
+4. **持久化存储**：挂载 `/app/storage` 目录
+
+**⚠️ 常见问题**：如果遇到 502 错误（前端能访问但 API 不通），请查看 [Coolify 部署指南](docs/COOLIFY_DEPLOYMENT.md)。
+
 ---
 
 ## 环境变量速查表
@@ -133,6 +144,12 @@ A: 不会。密钥存在服务器的 `.env` 文件里，不会暴露给前端或
 
 **Q: 可以用其它的大模型吗？**  
 A: 只要提供 OpenAI 兼容接口，都可以。改一下 `OPENAI_API_BASE_URL` 就行。
+
+**Q: 如何使用聚合 API（如 gptproto 等）？**  
+A: 聚合 API 通常兼容 OpenAI 格式。配置时需要注意：
+- ✅ **正确**：`OPENAI_API_BASE_URL=https://gptproto.com/v1`（只需要基础路径）
+- ❌ **错误**：`OPENAI_API_BASE_URL=https://gptproto.com/v1/chat/completions`（不要包含具体接口路径）
+- OpenAI SDK 会自动在基础路径后添加 `/chat/completions`，所以只需提供 `/v1` 即可
 
 **Q: 我改了代码怎么办？**  
 A: 欢迎！提 PR 或者 Issue 都行。

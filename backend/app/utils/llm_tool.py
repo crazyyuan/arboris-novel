@@ -25,7 +25,7 @@ class LLMClient:
         if not key:
             raise ValueError("缺少 OPENAI_API_KEY 配置，请在数据库或环境变量中补全。")
 
-        self._client = AsyncOpenAI(api_key=key, base_url=base_url or os.environ.get("OPENAI_API_BASE"))
+        self._client = AsyncOpenAI(api_key=key, base_url=base_url or os.environ.get("OPENAI_API_BASE_URL") or os.environ.get("OPENAI_API_BASE"))
 
     async def stream_chat(
         self,
